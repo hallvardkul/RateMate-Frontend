@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import axios from 'axios';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
@@ -25,10 +26,14 @@ const RegisterForm: React.FC = () => {
     setIsLoading(true);
     
     try {
-      await register(username, email, password);
+      await register({ username, email, password });
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      if (axios.isAxiosError(err) && err.response?.status === 429) {
+        setError('Too many attempts – please wait a minute.');
+      } else {
+        setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

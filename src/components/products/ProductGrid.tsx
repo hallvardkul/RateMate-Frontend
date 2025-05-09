@@ -33,7 +33,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading, error }) =
   if (!products?.length) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No products found.</p>
+        <p className="text-gray-500">No products yet — be the first to add one!</p>
       </div>
     );
   }

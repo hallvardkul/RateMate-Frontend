@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import ApiTest from './components/ApiTest';
 import './App.css';
 
 function App() {
@@ -40,6 +41,9 @@ function App() {
                   <ProfilePage />
                 </ProtectedRoute>
               } />
+
+              {/* Additional routes */}
+              <Route path="/api-test" element={<ApiTest />} />
             </Routes>
           </main>
           <Footer />

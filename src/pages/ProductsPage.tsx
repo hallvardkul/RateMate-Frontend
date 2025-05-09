@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useDebounce } from '../hooks/useDebounce';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 import { ProductFilters } from '../components/products/ProductFilters';
 import ProductGrid from '../components/products/ProductGrid';
@@ -28,31 +29,30 @@ export default function ProductsPage() {
     setFilters: setProductFilters,
   } = useProducts();
 
+  // Fetch categories and brands once on mount
   useEffect(() => {
-    // Fetch initial data
-    fetchProducts(1, { ...filters, search: searchQuery });
-
-    // Fetch categories and brands
-    const fetchData = async () => {
+    const fetchMeta = async () => {
       const [categoriesResponse, brandsResponse] = await Promise.all([
         api.getCategories(),
         api.getBrands(),
       ]);
 
-      if (categoriesResponse.data) {
-        setCategories(categoriesResponse.data);
-      }
-      if (brandsResponse.data) {
-        setBrands(brandsResponse.data);
-      }
+      if (categoriesResponse.data) setCategories(categoriesResponse.data);
+      if (brandsResponse.data) setBrands(brandsResponse.data);
     };
 
-    fetchData();
-  }, [searchQuery]);
+    fetchMeta();
+  }, []);
+
+  // Memoised filters object passed to hook
+  const debouncedSearch = useDebounce(searchQuery, 400);
+  const combinedFilters = useMemo(
+    () => ({ ...filters, search: debouncedSearch }),
+    [filters, debouncedSearch]
+  );
 
   const handleFilterChange = (newFilters: ProductFiltersType) => {
     setFilters(newFilters);
-    setProductFilters({ ...newFilters, search: searchQuery });
     setIsFiltersOpen(false);
   };
 
@@ -62,7 +62,6 @@ export default function ProductsPage() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    setProductFilters({ ...filters, search: query });
   };
 
   if (error) {

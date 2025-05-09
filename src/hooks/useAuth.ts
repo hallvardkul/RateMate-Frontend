@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../services/api';
+import api from '../services/api';
 import { User, LoginCredentials, RegisterCredentials } from '../types';
 import { useApi } from './useApi';
 
@@ -28,7 +28,7 @@ export function useAuth() {
   }, []);
 
   const loadUser = async () => {
-    const response = await getCurrentUser(() => api.getCurrentUser());
+    const response = await api.get<User>('/users/me').then(r => ({ data: r.data })).catch(e => ({ data: undefined, error: { code: e.response?.status || 500, message: e.message } }));
     if (response.data) {
       setState({
         user: response.data,
@@ -39,7 +39,8 @@ export function useAuth() {
   };
 
   const login = useCallback(async (credentials: LoginCredentials) => {
-    const response = await api.login(credentials);
+    const res = await api.post<AuthResponse>('/auth/login', credentials);
+    const response = { data: res.data, error: undefined };
     if (response.data) {
       setState({
         user: response.data.user,
@@ -52,7 +53,8 @@ export function useAuth() {
   }, [navigate]);
 
   const register = useCallback(async (credentials: RegisterCredentials) => {
-    const response = await api.register(credentials);
+    const res = await api.post<AuthResponse>('/auth/register', credentials);
+    const response = { data: res.data, error: undefined };
     if (response.data) {
       setState({
         user: response.data.user,
@@ -65,7 +67,7 @@ export function useAuth() {
   }, [navigate]);
 
   const logout = useCallback(() => {
-    api.logout();
+    localStorage.removeItem('token');
     setState({
       user: undefined,
       isAuthenticated: false,

@@ -1,81 +1,30 @@
-import { useState, useCallback } from 'react';
-import { api } from '../services/api';
-import { Product, ProductFilters, PaginatedResponse } from '../types';
-import { useApi } from './useApi';
+import { useEffect, useState } from 'react';
+import api from '../services/api';
+import { Product } from '../types/Product';
 
-interface UseProductsState {
-  products: Product[];
-  product: Product | undefined;
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  filters: ProductFilters;
-}
+export type ProductFilters = { brandId?: number; categoryId?: number };
 
-export function useProducts() {
-  const [state, setState] = useState<UseProductsState>({
-    products: [],
-    product: undefined,
-    total: 0,
-    page: 1,
-    limit: 20,
-    totalPages: 0,
-    filters: {},
-  });
+export function useProducts(
+  page: number = 1,
+  limit: number = 20,
+  filters?: ProductFilters
+) {
+  const [data, setData] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  const { execute: getProducts, loading, error } = useApi<PaginatedResponse<Product>>();
-  const { execute: getProduct } = useApi<Product>();
+  const filtersString = JSON.stringify(filters);
 
-  const fetchProducts = useCallback(async (page: number = 1, filters: ProductFilters = {}) => {
-    const response = await getProducts(() => api.getProducts(page, state.limit, filters));
-    if (response.data) {
-      const { items, total, page: currentPage, totalPages } = response.data;
-      const validProducts = items.filter((product): product is Product => product !== undefined);
-      setState((prev) => ({
-        ...prev,
-        products: validProducts,
-        total,
-        page: currentPage,
-        totalPages,
-        filters,
-      }));
-    }
-    return response;
-  }, [getProducts, state.limit]);
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    api
+      .get<Product[]>('/products', { params: { page, limit, ...filters } })
+      .then((r) => alive && setData(r.data))
+      .catch((e) => alive && setError(e))
+      .finally(() => alive && setLoading(false));
+    return () => { alive = false; };
+  }, [page, limit, filtersString]);
 
-  const fetchProduct = useCallback(async (id: string) => {
-    const response = await getProduct(() => api.getProduct(id));
-    if (response.data) {
-      setState((prev) => ({
-        ...prev,
-        product: response.data,
-      }));
-    }
-    return response;
-  }, [getProduct]);
-
-  const setPage = useCallback((page: number) => {
-    fetchProducts(page, state.filters);
-  }, [fetchProducts, state.filters]);
-
-  const setFilters = useCallback((filters: ProductFilters) => {
-    fetchProducts(1, filters);
-  }, [fetchProducts]);
-
-  const setLimit = useCallback((limit: number) => {
-    setState((prev) => ({ ...prev, limit }));
-    fetchProducts(1, state.filters);
-  }, [fetchProducts, state.filters]);
-
-  return {
-    ...state,
-    loading,
-    error,
-    fetchProducts,
-    fetchProduct,
-    setPage,
-    setFilters,
-    setLimit,
-  };
+  return { data, loading, error };
 } 
