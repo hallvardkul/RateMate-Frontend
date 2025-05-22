@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API } from '../services/api';
+import { products } from '../services/api';
 
 const ApiTest = () => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -9,7 +9,7 @@ const ApiTest = () => {
   useEffect(() => {
     const testApiConnection = async () => {
       try {
-        const response = await API.products.getAll(1, 10);
+        const response = await products.getAll();
         setData(response.data);
         setStatus('success');
       } catch (err) {

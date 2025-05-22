@@ -7,7 +7,7 @@ import { Pagination } from '../components/common/Pagination';
 import { SearchBar } from '../components/common/SearchBar';
 import { useProducts } from '../hooks/useProducts';
 import { ProductFilters as ProductFiltersType } from '../types';
-import { api } from '../services/api';
+import { categories as categoriesApi, brands as brandsApi } from '../services/api';
 import { Category, Brand } from '../types';
 
 export default function ProductsPage() {
@@ -33,8 +33,8 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchMeta = async () => {
       const [categoriesResponse, brandsResponse] = await Promise.all([
-        api.getCategories(),
-        api.getBrands(),
+        categoriesApi.getAll(),
+        brandsApi.getAll(),
       ]);
 
       if (categoriesResponse.data) setCategories(categoriesResponse.data);

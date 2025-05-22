@@ -1,15 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../services/api';
+import api, { auth } from '../services/api';
 import { LoginCredentials, RegisterCredentials, User, AuthResponse, ApiResponse } from '../types';
 
 interface AuthContextType {
   user: User | null;
-  login: (credentials: LoginCredentials) => Promise<ApiResponse<AuthResponse>>;
-  register: (credentials: RegisterCredentials) => Promise<ApiResponse<AuthResponse>>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
   updateUser: (user: User) => void;
+  loading: boolean;
+  error: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,43 +27,92 @@ export function useAuth() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      api.getCurrentUser().then((response) => {
-        if (response.data) {
-          setUser(response.data);
+    const initializeAuth = async () => {
+      try {
+        // Check if there's a token in localStorage
+        const token = localStorage.getItem('token');
+        const savedUser = localStorage.getItem('user');
+        
+        if (token && savedUser) {
+          try {
+            const parsedUser = JSON.parse(savedUser);
+            setUser(parsedUser);
+            
+            // Verify token validity by making a test request
+            await api.get('/user/profile');
+          } catch (e) {
+            console.error('Failed to initialize auth state:', e);
+            // Clear invalid auth state
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setUser(null);
+            setError('Session expired. Please log in again.');
+          }
         }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        setError('Failed to initialize authentication. Please try again.');
+      } finally {
         setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
+      }
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
-    const response = await api.login(credentials);
-    if (response.data) {
-      setUser(response.data.user);
+  const login = async (email: string, password: string) => {
+    try {
+      setError(null);
+      const response = await auth.login({ email, password });
+      
+      if (response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        setUser(response.data.user);
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      setError(error.response?.data?.error || 'Failed to log in. Please try again.');
+      throw error;
     }
-    return response;
   };
 
-  const register = async (credentials: RegisterCredentials) => {
-    const response = await api.register(credentials);
-    if (response.data) {
-      setUser(response.data.user);
+  const register = async (username: string, email: string, password: string) => {
+    try {
+      setError(null);
+      const response = await auth.register({ username, email, password });
+      
+      if (response.data && response.data.user) {
+        // If registration automatically logs in with a token
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          setUser(response.data.user);
+        }
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      setError(error.response?.data?.error || 'Failed to register. Please try again.');
+      throw error;
     }
-    return response;
   };
 
   const logout = () => {
-    api.logout();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
+    setError(null);
   };
 
   const updateUser = (updatedUser: User) => {
+    localStorage.setItem('user', JSON.stringify(updatedUser));
     setUser(updatedUser);
   };
 
@@ -72,7 +123,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
     updateUser,
     isAuthenticated: !!user,
-    isAdmin: user?.role === 'admin',
+    isAdmin: user?.is_admin === true,
+    loading,
+    error
   };
 
   if (loading) {

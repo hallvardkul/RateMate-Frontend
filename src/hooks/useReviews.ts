@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { api } from '../services/api';
+import { reviews as reviewsApi, comments as commentsApi } from '../services/api';
 import { Review, Comment, PaginatedResponse } from '../types';
 import { useApi } from './useApi';
 
@@ -23,8 +23,8 @@ export function useReviews() {
   const { execute: getReviews, loading, error } = useApi<PaginatedResponse<Review>>();
   const { execute: createReview } = useApi<Review>();
 
-  const fetchReviews = useCallback(async (productId?: string, page: number = 1) => {
-    const response = await getReviews(() => api.getReviews(productId, page, state.limit));
+  const fetchReviews = useCallback(async (productId: string, page: number = 1) => {
+    const response = await getReviews(() => reviewsApi.getAll(productId, page, state.limit));
     if (response.data) {
       const { items, total, page: currentPage, totalPages } = response.data;
       const validReviews = items.filter((review): review is Review => review !== undefined);
@@ -40,7 +40,7 @@ export function useReviews() {
   }, [getReviews, state.limit]);
 
   const addReview = useCallback(async (review: Omit<Review, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const response = await createReview(() => api.createReview(review));
+    const response = await createReview(() => reviewsApi.create(review));
     if (response.data) {
       setState((prev) => ({
         ...prev,
@@ -52,8 +52,8 @@ export function useReviews() {
   }, [createReview]);
 
   const setPage = useCallback((page: number) => {
-    fetchReviews(undefined, page);
-  }, [fetchReviews]);
+    fetchReviews(state.reviews[0]?.productId || '', page);
+  }, [fetchReviews, state.reviews]);
 
   return {
     ...state,
@@ -86,7 +86,7 @@ export function useComments() {
   const { execute: createComment } = useApi<Comment>();
 
   const fetchComments = useCallback(async (reviewId: string, page: number = 1) => {
-    const response = await getComments(() => api.getComments(reviewId, page, state.limit));
+    const response = await getComments(() => commentsApi.getAll(reviewId, page, state.limit));
     if (response.data) {
       const { items, total, page: currentPage, totalPages } = response.data;
       const validComments = items.filter((comment): comment is Comment => comment !== undefined);
@@ -102,7 +102,7 @@ export function useComments() {
   }, [getComments, state.limit]);
 
   const addComment = useCallback(async (comment: Omit<Comment, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const response = await createComment(() => api.createComment(comment));
+    const response = await createComment(() => commentsApi.create(comment));
     if (response.data) {
       setState((prev) => ({
         ...prev,

@@ -6,7 +6,7 @@ import { ReviewForm } from '../components/reviews/ReviewForm';
 import { useProducts } from '../hooks/useProducts';
 import { useReviews } from '../hooks/useReviews';
 import { useAuth } from '../hooks/useAuth';
-import { api } from '../services/api';
+import api from '../services/api';
 import { Review } from '../types';
 
 export default function ProductDetailPage() {

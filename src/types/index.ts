@@ -1,11 +1,10 @@
 export interface User {
-  id: string;
+  user_id: number;
   username: string;
   email: string;
-  bio?: string;
-  role: 'user' | 'admin';
-  createdAt: string;
-  updatedAt: string;
+  is_admin?: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Product {

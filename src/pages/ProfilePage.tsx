@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { api } from '../services/api';
+import { user as userApi } from '../services/api';
 import { User } from '../types';
 
 export default function ProfilePage() {
@@ -9,7 +9,6 @@ export default function ProfilePage() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    bio: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +19,6 @@ export default function ProfilePage() {
       setFormData({
         username: user.username,
         email: user.email,
-        bio: user.bio || '',
       });
     }
   }, [user]);
@@ -34,7 +32,7 @@ export default function ProfilePage() {
     setSuccess(false);
 
     try {
-      const response = await api.updateUser(user.id, formData);
+      const response = await userApi.update(user.user_id, formData);
       if (response.data) {
         updateUser(response.data);
         setSuccess(true);
@@ -109,23 +107,6 @@ export default function ProfilePage() {
                         id="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        disabled={!isEditing}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-gray-50 disabled:text-gray-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-full">
-                    <label htmlFor="bio" className="block text-sm font-medium leading-6 text-gray-900">
-                      Bio
-                    </label>
-                    <div className="mt-2">
-                      <textarea
-                        id="bio"
-                        name="bio"
-                        rows={3}
-                        value={formData.bio}
-                        onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                         disabled={!isEditing}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-gray-50 disabled:text-gray-500"
                       />
