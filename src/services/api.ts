@@ -2,14 +2,14 @@ import axios from 'axios';
 
 // Flat Axios client configured via environment variable
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:7073/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:7071/api',
   withCredentials: true,
 });
 
 // Request interceptor for adding auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || localStorage.getItem('brandToken');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,6 +33,7 @@ api.interceptors.response.use(
       if (error.response.status === 401) {
         // Clear token and redirect to login if unauthorized
         localStorage.removeItem('token');
+        localStorage.removeItem('brandToken');
         window.location.href = '/login';
       }
     } else if (error.request) {
@@ -52,29 +53,41 @@ const auth = {
   login: (credentials: any) => api.post('/auth/login', credentials),
 };
 
-// Products methods
+// Brand authentication methods
+const brandAuth = {
+  register: (brandData: any) => api.post('/brands/auth/register', brandData),
+  login: (credentials: any) => api.post('/brands/auth/login', credentials),
+  dashboard: () => api.get('/brands/dashboard'),
+};
+
+// Products methods - Updated to use public endpoints
 const products = {
-  getAll: (page = 1, limit = 20) => api.get(`/products?page=${page}&limit=${limit}`),
-  getById: (id: string | number) => api.get(`/products/${id}`),
-  create: (productData: any) => api.post('/products', productData),
-  update: (id: string | number, productData: any) => api.put(`/products/${id}`, productData),
-  delete: (id: string | number) => api.delete(`/products/${id}`),
+  getAll: (page = 1, limit = 20) => api.get(`/public/products?page=${page}&limit=${limit}`),
+  getById: (id: string | number) => api.get(`/public/products/${id}`),
+  create: (productData: any) => api.post('/brands/products', productData),
+  update: (id: string | number, productData: any) => api.put(`/brands/products/${id}`, productData),
+  delete: (id: string | number) => api.delete(`/brands/products/${id}`),
+  // Brand-specific product methods
+  getBrandProducts: () => api.get('/brands/dashboard/products'),
+  getProductReviews: (productId: string | number) => api.get(`/brands/products/${productId}/reviews`),
 };
 
 // Categories methods
 const categories = {
-  getAll: () => api.get('/categories'),
+  getAll: () => api.get('/public/products/categories'),
 };
 
-// Brands methods
+// Brands methods - Updated to use public endpoints
 const brands = {
-  getAll: () => api.get('/brands'),
+  getAll: () => api.get('/public/brands'),
+  getById: (id: string | number) => api.get(`/public/brands/${id}`),
 };
 
 // Reviews methods
 const reviews = {
   getAll: (productId: string, page = 1, limit = 20) => api.get(`/reviews?productId=${productId}&page=${page}&limit=${limit}`),
-  create: (reviewData: any) => api.post('/reviews', reviewData),
+  create: (reviewData: any) => api.post('/users/reviews', reviewData),
+  getUserReviews: () => api.get('/users/reviews'),
 };
 
 // Comments methods
@@ -90,7 +103,7 @@ const user = {
 };
 
 export default api;
-export { auth, products, categories, brands, reviews, comments, user };
+export { auth, brandAuth, products, categories, brands, reviews, comments, user };
 
 /* ----------------------------------------------------------------
    TODO: long-term, migrate to this shared instance + hooks pattern

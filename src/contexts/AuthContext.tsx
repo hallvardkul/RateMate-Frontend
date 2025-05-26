@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api, { auth } from '../services/api';
-import { LoginCredentials, RegisterCredentials, User, AuthResponse, ApiResponse } from '../types';
+import { User, AuthResponse, UserType, CreateUserRequest } from '../types/user';
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
+  register: (userData: CreateUserRequest) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isBrand: boolean;
+  isUser: boolean;
   updateUser: (user: User) => void;
   loading: boolean;
   error: string | null;
@@ -82,10 +84,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const register = async (username: string, email: string, password: string) => {
+  const register = async (userData: CreateUserRequest) => {
     try {
       setError(null);
-      const response = await auth.register({ username, email, password });
+      const response = await auth.register(userData);
       
       if (response.data && response.data.user) {
         // If registration automatically logs in with a token
@@ -124,6 +126,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     updateUser,
     isAuthenticated: !!user,
     isAdmin: user?.is_admin === true,
+    isBrand: user?.user_type === 'brand',
+    isUser: user?.user_type === 'user',
     loading,
     error
   };

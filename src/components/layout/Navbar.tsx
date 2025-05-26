@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, UserCircleIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
 const navigation = [
@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
                 </div>
               </div>
 
-              <div className="hidden sm:ml-6 sm:flex sm:items-center">
+              <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
                 {isAuthenticated ? (
                   <Menu as="div" className="relative ml-3">
                     <div>
@@ -85,20 +85,70 @@ const Navbar: React.FC = () => {
                     </Transition>
                   </Menu>
                 ) : (
-                  <div className="space-x-4">
-                    <Link
-                      to="/login"
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                    >
-                      Sign in
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                      Sign up
-                    </Link>
-                  </div>
+                  <>
+                    {/* User Login/Register */}
+                    <div className="space-x-2">
+                      <Link
+                        to="/login"
+                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                      >
+                        Sign in
+                      </Link>
+                      <Link
+                        to="/register"
+                        className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                      >
+                        Sign up
+                      </Link>
+                    </div>
+
+                    {/* Brand Menu */}
+                    <Menu as="div" className="relative">
+                      <div>
+                        <Menu.Button className="flex items-center px-3 py-2 border border-orange-300 text-sm font-medium rounded-md text-orange-700 bg-orange-50 hover:bg-orange-100">
+                          <BuildingOfficeIcon className="h-4 w-4 mr-1" />
+                          For Brands
+                        </Menu.Button>
+                      </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-200"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="/brand/login"
+                                className={`${
+                                  active ? 'bg-gray-100' : ''
+                                } block px-4 py-2 text-sm text-gray-700`}
+                              >
+                                Brand Login
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="/brand/register"
+                                className={`${
+                                  active ? 'bg-gray-100' : ''
+                                } block px-4 py-2 text-sm text-gray-700`}
+                              >
+                                Register Brand
+                              </Link>
+                            )}
+                          </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </>
                 )}
               </div>
 
@@ -142,6 +192,21 @@ const Navbar: React.FC = () => {
                   >
                     Sign up
                   </Link>
+                  <div className="border-t border-gray-200 mt-2 pt-2">
+                    <p className="px-4 py-1 text-xs font-medium text-gray-400 uppercase tracking-wide">For Brands</p>
+                    <Link
+                      to="/brand/login"
+                      className="block px-4 py-2 text-base font-medium text-orange-600 hover:bg-orange-50 hover:text-orange-800"
+                    >
+                      Brand Login
+                    </Link>
+                    <Link
+                      to="/brand/register"
+                      className="block px-4 py-2 text-base font-medium text-orange-600 hover:bg-orange-50 hover:text-orange-800"
+                    >
+                      Register Brand
+                    </Link>
+                  </div>
                 </div>
               </div>
             )}
