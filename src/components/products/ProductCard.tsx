@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Product } from '../../types';
+import { ProductWithStats as Product } from '../../types/Product';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
 
@@ -34,14 +34,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <Link to={`/products/${product.id}`} className="group">
+    <Link to={`/products/${product.product_id}/dashboard`} className="group">
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-        {product.imageUrl ? (
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="h-full w-full object-cover object-center group-hover:opacity-75"
-          />
+        {/* image handling - backend may not supply */}
+        {false ? (
+          <img src="" alt="" />
         ) : (
           <div className="h-full w-full flex items-center justify-center bg-gray-100 text-gray-400">
             No image
@@ -49,26 +46,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
       </div>
       <div className="mt-4">
-        <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
+        <h3 className="text-sm font-medium text-gray-900">{product.product_name}</h3>
         <p className="mt-1 text-sm text-gray-500 line-clamp-2">{product.description}</p>
         
         <div className="mt-2 flex items-center">
           <div className="flex items-center">
-            {renderRatingStars(product.averageRating)}
+            {renderRatingStars(parseFloat(product.average_rating))}
           </div>
           <p className="ml-2 text-sm text-gray-500">
-            {product.reviewCount} {product.reviewCount === 1 ? 'review' : 'reviews'}
+            {product.total_reviews} {parseInt(product.total_reviews) === 1 ? 'review' : 'reviews'}
           </p>
         </div>
         
-        {product.price && (
-          <p className="mt-1 text-sm font-medium text-gray-900">${product.price.toFixed(2)}</p>
-        )}
-        
-        {product.brand && (
-          <p className="mt-1 text-xs text-gray-500">
-            {product.brand.name}
-          </p>
+        {product.brand_name && (
+          <p className="mt-1 text-xs text-gray-500">Brand: {product.brand_name}</p>
         )}
       </div>
     </Link>

@@ -17,7 +17,8 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
     
     try {
-      await login(email, password);
+      setIsLoading(true);
+      await login({ email, password });
       navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');

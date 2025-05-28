@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { products as productsApi } from '../services/api';
-import { Product } from '../types/Product';
+import { ProductWithStats as Product, ProductsResponse } from '../types/Product';
 
 export type ProductFilters = { brandId?: number; categoryId?: number; search?: string };
 
@@ -24,15 +24,16 @@ export function useProducts() {
         ...overrideFilters,
       };
       const response = await productsApi.getAll(params.page, 20);
-      // If backend returns paginated object, adjust here
-      if (Array.isArray(response.data)) {
-        setProducts(response.data);
-        setTotal(response.data.length);
+      const data = response.data as ProductsResponse | Product[];
+
+      if (Array.isArray(data)) {
+        setProducts(data as Product[]);
+        setTotal(data.length);
         setTotalPages(1);
       } else {
-        setProducts(response.data.products || []);
-        setTotal(response.data.total || 0);
-        setTotalPages(response.data.totalPages || 1);
+        setProducts(data.products || []);
+        setTotal(data.total || (data.products?.length ?? 0));
+        setTotalPages((data as any).totalPages || 1);
       }
     } catch (e: any) {
       setError(e);

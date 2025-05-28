@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import ProductDashboardPage from './pages/ProductDashboardPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
@@ -26,6 +27,7 @@ function App() {
               {/* Public routes */}
               <Route path="/" element={<ProductsPage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:id/dashboard" element={<ProductDashboardPage />} />
               <Route path="/products/:id" element={<ProductDetailPage />} />
               <Route path="/login" element={
                 <ProtectedRoute requireAuth={false}>

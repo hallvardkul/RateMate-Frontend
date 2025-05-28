@@ -32,7 +32,7 @@ export function ReviewForm({ productId, onSubmit }: ReviewFormProps) {
     try {
       await onSubmit({
         productId,
-        userId: user.id,
+        userId: user.user_id,
         title,
         content,
         rating,

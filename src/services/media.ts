@@ -16,4 +16,7 @@ export async function uploadMedia(
 
   const response = await api.post('/media', form);
   return response.data;
-} 
+}
+
+export const getProductMedia = (productId: string | number) =>
+  api.get(`/public/products/${productId}/media`); 

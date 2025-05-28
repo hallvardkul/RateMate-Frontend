@@ -67,6 +67,13 @@ const products = {
   create: (productData: any) => api.post('/brands/products', productData),
   update: (id: string | number, productData: any) => api.put(`/brands/products/${id}`, productData),
   delete: (id: string | number) => api.delete(`/brands/products/${id}`),
+  uploadMedia: (productId: string | number, files: File[]) => {
+    const form = new FormData();
+    files.forEach((file) => form.append('media', file));
+    return api.post(`/brands/products/${productId}/media`, form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
   // Brand-specific product methods
   getBrandProducts: () => api.get('/brands/dashboard/products'),
   getProductReviews: (productId: string | number) => api.get(`/brands/products/${productId}/reviews`),

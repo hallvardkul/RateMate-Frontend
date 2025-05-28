@@ -37,8 +37,22 @@ export default function ProductsPage() {
         brandsApi.getAll(),
       ]);
 
-      if (categoriesResponse.data) setCategories(categoriesResponse.data);
-      if (brandsResponse.data) setBrands(brandsResponse.data);
+      // Transform categories: backend returns { categories: [{ category: 'smartphone', product_count: 10 }, ...] }
+      const catRows = categoriesResponse.data?.categories ?? categoriesResponse.data ?? [];
+      const mappedCategories = (Array.isArray(catRows) ? catRows : []).map((c: any, idx: number) => ({
+        id: c.category ?? idx.toString(),
+        name: c.category ?? String(c),
+      }));
+
+      // Transform brands: backend returns { brands: [{ brand_id, brand_name, ...}, ...], pagination }
+      const brandRows = brandsResponse.data?.brands ?? brandsResponse.data ?? [];
+      const mappedBrands = (Array.isArray(brandRows) ? brandRows : []).map((b: any) => ({
+        id: String(b.brand_id ?? b.id ?? ''),
+        name: b.brand_name ?? b.name ?? '',
+      }));
+
+      setCategories(mappedCategories as any);
+      setBrands(mappedBrands as any);
     };
 
     fetchMeta();

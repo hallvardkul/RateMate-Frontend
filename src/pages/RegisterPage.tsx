@@ -31,10 +31,15 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      await register(formData.username, formData.email, formData.password);
-      navigate('/');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+      await register({ 
+        username: formData.username, 
+        email: formData.email, 
+        password: formData.password,
+        user_type: 'user'
+      });
+      navigate('/login');
+    } catch (error: any) {
+      setError(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setIsLoading(false);
     }

@@ -49,7 +49,7 @@ export interface Brand {
 export interface Review {
   id: string;
   productId: string;
-  userId: string;
+  userId: number;
   rating: number;
   title: string;
   content: string;

@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { User, LoginCredentials, RegisterCredentials } from '../types';
+import { User, LoginCredentials, RegisterCredentials, AuthResponse } from '../types';
 import { useApi } from './useApi';
+import { AuthContext } from '../contexts/AuthContext';
 
 interface AuthState {
   user: User | undefined;

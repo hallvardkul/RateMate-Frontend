@@ -39,6 +39,7 @@ const BrandDashboardPage: React.FC = () => {
     product_category: '',
     description: '',
   });
+  const [newProductFiles, setNewProductFiles] = useState<File[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,9 +78,18 @@ const BrandDashboardPage: React.FC = () => {
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await products.create(newProduct);
+      const createRes = await products.create(newProduct);
+      const createdId = createRes.data.product?.product_id || createRes.data.product_id;
+      // Upload media if any files selected
+      if (newProductFiles.length > 0 && createdId) {
+        try {
+          await products.uploadMedia(createdId, newProductFiles);
+        } catch (uploadErr: any) {
+          console.error('Media upload error', uploadErr);
+        }
+      }
       setNewProduct({ product_name: '', product_category: '', description: '' });
-      setShowAddProduct(false);
+      setNewProductFiles([]);
       loadDashboardData(); // Reload data
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to create product');
@@ -201,6 +211,16 @@ const BrandDashboardPage: React.FC = () => {
                     rows={3}
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Media (images / pdf) optional</label>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*,application/pdf,video/*"
+                    onChange={(e) => setNewProductFiles(e.target.files ? Array.from(e.target.files) : [])}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  />
+                </div>
                 <div className="flex space-x-3">
                   <button
                     type="submit"
@@ -228,24 +248,33 @@ const BrandDashboardPage: React.FC = () => {
               </p>
             ) : (
               <div className="space-y-4">
-                {brandProducts.map((product) => (
-                  <div key={product.product_id} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">{product.product_name}</h3>
-                        <p className="text-sm text-gray-600">{product.product_category}</p>
-                        {product.description && (
-                          <p className="text-sm text-gray-700 mt-2">{product.description}</p>
-                        )}
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">
-                          {Number(product.average_rating).toFixed(1)}⭐ ({product.total_reviews} reviews)
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          Created: {new Date(product.created_at).toLocaleDateString()}
-                        </p>
-                      </div>
+                {brandProducts.map((prod) => (
+                  <div key={prod.product_id} className="border p-4 rounded mb-4 flex justify-between items-center">
+                    <div>
+                      <p className="font-semibold">{prod.product_name}</p>
+                      <p className="text-sm text-gray-500">{prod.product_category}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <label className="bg-indigo-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-700 text-sm">
+                        Upload Media
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*,application/pdf,video/*"
+                          hidden
+                          onChange={async (e) => {
+                            const files = e.target.files ? Array.from(e.target.files) : [];
+                            if (files.length === 0) return;
+                            try {
+                              await products.uploadMedia(prod.product_id, files);
+                              alert('Media uploaded');
+                            } catch (err: any) {
+                              alert('Upload failed');
+                              console.error(err);
+                            }
+                          }}
+                        />
+                      </label>
                     </div>
                   </div>
                 ))}
