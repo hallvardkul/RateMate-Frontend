@@ -148,4 +148,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
 >>>>>>> 0120698 (Initial commit with working TailwindCSS configuration)
+=======
+browser-tools-mcp/
+local.settings.json
+>>>>>>> de48f09 (chore: ignore browser-tools-mcp and local.settings.json)
