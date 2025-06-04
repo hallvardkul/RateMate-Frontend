@@ -29,12 +29,12 @@ export function useAuth() {
   }, []);
 
   const loadUser = async () => {
-    const response = await api.get<User>('/users/me').then(r => ({ data: r.data })).catch(e => ({ data: undefined, error: { code: e.response?.status || 500, message: e.message } }));
+    const response = await api.get<User>('/user/profile').then(r => ({ data: r.data })).catch(e => ({ data: undefined, error: { code: e.response?.status || 500, message: e.message } }));
     if (response.data) {
       setState({
         user: response.data,
         isAuthenticated: true,
-        isAdmin: response.data.role === 'admin',
+        isAdmin: false,
       });
     }
   };
@@ -46,7 +46,7 @@ export function useAuth() {
       setState({
         user: response.data.user,
         isAuthenticated: true,
-        isAdmin: response.data.user.role === 'admin',
+        isAdmin: false,
       });
       navigate('/');
     }
@@ -60,7 +60,7 @@ export function useAuth() {
       setState({
         user: response.data.user,
         isAuthenticated: true,
-        isAdmin: response.data.user.role === 'admin',
+        isAdmin: false,
       });
       navigate('/');
     }

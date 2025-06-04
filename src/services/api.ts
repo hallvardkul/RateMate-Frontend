@@ -109,8 +109,15 @@ const user = {
   profile: () => api.get('/user/profile'),
 };
 
+// Dashboard methods for enhanced product dashboard
+const dashboard = {
+  getProduct: (productId: string | number) => api.get(`/dashboard/products/${productId}`),
+  submitReview: (productId: string | number, reviewData: any) => api.post(`/dashboard/products/${productId}/reviews`, reviewData),
+  submitComment: (reviewId: string | number, commentData: any) => api.post(`/dashboard/reviews/${reviewId}/comments`, commentData),
+};
+
 export default api;
-export { auth, brandAuth, products, categories, brands, reviews, comments, user };
+export { auth, brandAuth, products, categories, brands, reviews, comments, user, dashboard };
 
 /* ----------------------------------------------------------------
    TODO: long-term, migrate to this shared instance + hooks pattern
