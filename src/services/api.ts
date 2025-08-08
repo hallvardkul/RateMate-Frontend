@@ -3,7 +3,7 @@ import axios from 'axios';
 // Flat Axios client configured via environment variable
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:7071/api',
-  withCredentials: true,
+  withCredentials: false,
 });
 
 // Request interceptor for adding auth token

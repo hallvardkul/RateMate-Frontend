@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# RateMate-Frontend
-=======
 # RateMate Frontend
 
 RateMate is a modern web application for product reviews and ratings. This repository contains the frontend implementation built with React, TypeScript, and Tailwind CSS.
@@ -75,34 +72,24 @@ src/
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - npm or yarn
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/ratemate-frontend.git
-cd ratemate-frontend
-```
-
-2. Install dependencies:
+1. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
 ```
 
-3. Create a `.env` file in the root directory:
+2. Create a `.env` file in the root directory:
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:7071/api
 ```
 
-4. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 The application will be available at `http://localhost:5173`.
@@ -113,7 +100,6 @@ The application will be available at `http://localhost:5173`.
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript type checking
 
 ## API Integration
 
@@ -143,4 +129,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Headless UI](https://headlessui.dev/)
 - [Heroicons](https://heroicons.com/)
->>>>>>> 0120698 (Initial commit with working TailwindCSS configuration)

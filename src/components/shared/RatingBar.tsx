@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-
-
-=======
 import React from 'react';
 import { StarIcon as SolidStar } from '@heroicons/react/24/solid';
 import { StarIcon as OutlineStar } from '@heroicons/react/24/outline';
@@ -33,5 +28,4 @@ export default function RatingBar({ rating, max = 10, onChange }: RatingBarProps
       ))}
     </div>
   );
-} 
->>>>>>> 58bce4a (new functionality for posting reviews and ratings)
+}
