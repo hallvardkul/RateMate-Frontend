@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { User, LoginCredentials, RegisterCredentials, AuthResponse } from '../types';
-import { useApi } from './useApi';
-import { AuthContext } from '../contexts/AuthContext';
 
 interface AuthState {
   user: User | undefined;
@@ -18,8 +16,6 @@ export function useAuth() {
     isAuthenticated: false,
     isAdmin: false,
   });
-
-  const { execute: getCurrentUser } = useApi<User>();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -41,7 +37,7 @@ export function useAuth() {
 
   const login = useCallback(async (credentials: LoginCredentials) => {
     const res = await api.post<AuthResponse>('/auth/login', credentials);
-    const response = { data: res.data, error: undefined };
+    const response = { data: res.data, error: undefined } as const;
     if (response.data) {
       setState({
         user: response.data.user,
@@ -55,7 +51,7 @@ export function useAuth() {
 
   const register = useCallback(async (credentials: RegisterCredentials) => {
     const res = await api.post<AuthResponse>('/auth/register', credentials);
-    const response = { data: res.data, error: undefined };
+    const response = { data: res.data, error: undefined } as const;
     if (response.data) {
       setState({
         user: response.data.user,

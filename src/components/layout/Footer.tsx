@@ -5,25 +5,25 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-white border-t">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="py-8">
+        <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+              <h3 className="text-sm font-semibold text-slate-500 tracking-wider uppercase">
                 About
               </h3>
-              <ul className="mt-4 space-y-4">
+              <ul className="mt-4 space-y-3">
                 <li>
-                  <Link to="/about" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/about" className="text-sm text-slate-600 hover:text-slate-900">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/contact" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/contact" className="text-sm text-slate-600 hover:text-slate-900">
                     Contact
                   </Link>
                 </li>
                 <li>
-                  <Link to="/careers" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/careers" className="text-sm text-slate-600 hover:text-slate-900">
                     Careers
                   </Link>
                 </li>
@@ -31,22 +31,22 @@ const Footer: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+              <h3 className="text-sm font-semibold text-slate-500 tracking-wider uppercase">
                 Support
               </h3>
-              <ul className="mt-4 space-y-4">
+              <ul className="mt-4 space-y-3">
                 <li>
-                  <Link to="/help" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/help" className="text-sm text-slate-600 hover:text-slate-900">
                     Help Center
                   </Link>
                 </li>
                 <li>
-                  <Link to="/faq" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/faq" className="text-sm text-slate-600 hover:text-slate-900">
                     FAQ
                   </Link>
                 </li>
                 <li>
-                  <Link to="/terms" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/terms" className="text-sm text-slate-600 hover:text-slate-900">
                     Terms of Service
                   </Link>
                 </li>
@@ -54,22 +54,22 @@ const Footer: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+              <h3 className="text-sm font-semibold text-slate-500 tracking-wider uppercase">
                 Legal
               </h3>
-              <ul className="mt-4 space-y-4">
+              <ul className="mt-4 space-y-3">
                 <li>
-                  <Link to="/privacy" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/privacy" className="text-sm text-slate-600 hover:text-slate-900">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/cookies" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/cookies" className="text-sm text-slate-600 hover:text-slate-900">
                     Cookie Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/sitemap" className="text-base text-gray-500 hover:text-gray-900">
+                  <Link to="/sitemap" className="text-sm text-slate-600 hover:text-slate-900">
                     Sitemap
                   </Link>
                 </li>
@@ -77,16 +77,16 @@ const Footer: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+              <h3 className="text-sm font-semibold text-slate-500 tracking-wider uppercase">
                 Connect
               </h3>
-              <ul className="mt-4 space-y-4">
+              <ul className="mt-4 space-y-3">
                 <li>
                   <a
                     href="https://twitter.com/ratemate"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-base text-gray-500 hover:text-gray-900"
+                    className="text-sm text-slate-600 hover:text-slate-900"
                   >
                     Twitter
                   </a>
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
                     href="https://facebook.com/ratemate"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-base text-gray-500 hover:text-gray-900"
+                    className="text-sm text-slate-600 hover:text-slate-900"
                   >
                     Facebook
                   </a>
@@ -106,7 +106,7 @@ const Footer: React.FC = () => {
                     href="https://instagram.com/ratemate"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-base text-gray-500 hover:text-gray-900"
+                    className="text-sm text-slate-600 hover:text-slate-900"
                   >
                     Instagram
                   </a>
@@ -115,8 +115,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-8 border-t border-gray-200 pt-8">
-            <p className="text-base text-gray-400 text-center">
+          <div className="mt-10 border-t border-slate-200 pt-8">
+            <p className="text-sm text-slate-500 text-center">
               &copy; {new Date().getFullYear()} RateMate. All rights reserved.
             </p>
           </div>

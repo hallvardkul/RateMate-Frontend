@@ -10,57 +10,55 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const renderRatingStars = (rating: number = 0) => {
-    const stars = [];
+    const stars: React.ReactElement[] = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
 
     for (let i = 1; i <= 5; i++) {
       if (i <= fullStars) {
-        stars.push(
-          <StarIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-        );
+        stars.push(<StarIcon key={i} className="h-4 w-4 text-amber-400" aria-hidden="true" />);
       } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(
-          <StarIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-        );
+        stars.push(<StarIcon key={i} className="h-4 w-4 text-amber-400" aria-hidden="true" />);
       } else {
-        stars.push(
-          <StarOutlineIcon key={i} className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-        );
+        stars.push(<StarOutlineIcon key={i} className="h-4 w-4 text-amber-400" aria-hidden="true" />);
       }
     }
 
     return stars;
   };
 
+  const average = parseFloat(product.average_rating);
+
   return (
-    <Link to={`/products/${product.product_id}/dashboard`} className="group">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-        {/* image handling - backend may not supply */}
-        {false ? (
-          <img src="" alt="" />
-        ) : (
-          <div className="h-full w-full flex items-center justify-center bg-gray-100 text-gray-400">
+    <Link to={`/products/${product.product_id}/dashboard`} className="group block">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md">
+        <div className="aspect-w-1 aspect-h-1 w-full bg-slate-100">
+          {/* image placeholder */}
+          <div className="h-full w-full flex items-center justify-center text-slate-400">
             No image
           </div>
-        )}
-      </div>
-      <div className="mt-4">
-        <h3 className="text-sm font-medium text-gray-900">{product.product_name}</h3>
-        <p className="mt-1 text-sm text-gray-500 line-clamp-2">{product.description}</p>
-        
-        <div className="mt-2 flex items-center">
-          <div className="flex items-center">
-            {renderRatingStars(parseFloat(product.average_rating))}
-          </div>
-          <p className="ml-2 text-sm text-gray-500">
-            {product.total_reviews} {parseInt(product.total_reviews) === 1 ? 'review' : 'reviews'}
-          </p>
         </div>
-        
-        {product.brand_name && (
-          <p className="mt-1 text-xs text-gray-500">Brand: {product.brand_name}</p>
-        )}
+        <div className="p-4">
+          <h3 className="text-sm font-semibold text-slate-900 line-clamp-1 group-hover:underline">
+            {product.product_name}
+          </h3>
+          {product.description && (
+            <p className="mt-1 text-xs text-slate-600 line-clamp-2">{product.description}</p>
+          )}
+
+          <div className="mt-3 flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              {renderRatingStars(average)}
+            </div>
+            <p className="text-xs text-slate-500">
+              {product.total_reviews} {parseInt(product.total_reviews) === 1 ? 'review' : 'reviews'}
+            </p>
+          </div>
+
+          {product.brand_name && (
+            <p className="mt-2 text-xs text-slate-500">Brand: {product.brand_name}</p>
+          )}
+        </div>
       </div>
     </Link>
   );

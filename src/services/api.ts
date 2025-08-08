@@ -93,8 +93,9 @@ const brands = {
 // Reviews methods
 const reviews = {
   getAll: (productId: string, page = 1, limit = 20) => api.get(`/reviews?productId=${productId}&page=${page}&limit=${limit}`),
-  create: (reviewData: any) => api.post('/users/reviews', reviewData),
+  create: (reviewData: any) => api.post('/reviews', reviewData),
   getUserReviews: () => api.get('/users/reviews'),
+  getCategories: () => api.get('/reviews?categoriesOnly=true'),
 };
 
 // Comments methods
