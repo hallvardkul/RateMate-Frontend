@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { Review } from '../../types';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
@@ -14,7 +14,7 @@ interface ReviewListProps {
 
 export function ReviewList({ reviews, total, page, totalPages, onPageChange }: ReviewListProps) {
   const renderRatingStars = (rating: number) => {
-    const stars = [];
+    const stars: React.ReactNode[] = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         stars.push(<StarIcon key={i} className="h-5 w-5 text-yellow-400" />);
@@ -39,7 +39,7 @@ export function ReviewList({ reviews, total, page, totalPages, onPageChange }: R
     <div className="space-y-8">
       <div className="space-y-6">
         {reviews.map((review) => (
-          <div key={review.id} className="bg-white shadow rounded-lg p-6">
+          <div key={review.id} className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-medium text-gray-900">{review.title}</h3>

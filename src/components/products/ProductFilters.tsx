@@ -29,14 +29,14 @@ export function ProductFilters({
       <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
-          enter="ease-in-out duration-500"
+          enter="ease-in-out duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in-out duration-500"
+          leave="ease-in-out duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-slate-500/40 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-hidden">
@@ -44,24 +44,24 @@ export function ProductFilters({
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
               <Transition.Child
                 as={Fragment}
-                enter="transform transition ease-in-out duration-500"
+                enter="transform transition ease-in-out duration-300"
                 enterFrom="translate-x-full"
                 enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-500"
+                leave="transform transition ease-in-out duration-200"
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                    <div className="px-4 py-6 sm:px-6">
+                    <div className="px-4 py-6 sm:px-6 border-b border-slate-200">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">
+                        <Dialog.Title className="text-lg font-semibold text-slate-900">
                           Filters
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
-                            className="relative rounded-md bg-white text-gray-400 hover:text-gray-500"
+                            className="relative rounded-md bg-white text-slate-400 hover:text-slate-600"
                             onClick={onClose}
                           >
                             <span className="sr-only">Close panel</span>
@@ -71,15 +71,15 @@ export function ProductFilters({
                       </div>
                     </div>
                     <div className="relative flex-1 px-4 sm:px-6">
-                      <div className="space-y-6">
+                      <div className="space-y-6 py-6">
                         {/* Category Filter */}
                         <div>
-                          <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                          <label htmlFor="category" className="block text-sm font-medium text-slate-700">
                             Category
                           </label>
                           <select
                             id="category"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             value={filters.categoryId || ''}
                             onChange={(e) => handleChange('categoryId', e.target.value || undefined)}
                           >
@@ -94,12 +94,12 @@ export function ProductFilters({
 
                         {/* Brand Filter */}
                         <div>
-                          <label htmlFor="brand" className="block text-sm font-medium text-gray-700">
+                          <label htmlFor="brand" className="block text-sm font-medium text-slate-700">
                             Brand
                           </label>
                           <select
                             id="brand"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             value={filters.brandId || ''}
                             onChange={(e) => handleChange('brandId', e.target.value || undefined)}
                           >
@@ -114,7 +114,7 @@ export function ProductFilters({
 
                         {/* Price Range */}
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Price Range</label>
+                          <label className="block text-sm font-medium text-slate-700">Price Range</label>
                           <div className="mt-1 grid grid-cols-2 gap-4">
                             <div>
                               <label htmlFor="minPrice" className="sr-only">
@@ -123,7 +123,7 @@ export function ProductFilters({
                               <input
                                 type="number"
                                 id="minPrice"
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 placeholder="Min"
                                 value={filters.minPrice || ''}
                                 onChange={(e) => handleChange('minPrice', e.target.value ? Number(e.target.value) : undefined)}
@@ -136,7 +136,7 @@ export function ProductFilters({
                               <input
                                 type="number"
                                 id="maxPrice"
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 placeholder="Max"
                                 value={filters.maxPrice || ''}
                                 onChange={(e) => handleChange('maxPrice', e.target.value ? Number(e.target.value) : undefined)}
@@ -147,12 +147,12 @@ export function ProductFilters({
 
                         {/* Minimum Rating */}
                         <div>
-                          <label htmlFor="minRating" className="block text-sm font-medium text-gray-700">
+                          <label htmlFor="minRating" className="block text-sm font-medium text-slate-700">
                             Minimum Rating
                           </label>
                           <select
                             id="minRating"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             value={filters.minRating || ''}
                             onChange={(e) => handleChange('minRating', e.target.value ? Number(e.target.value) : undefined)}
                           >
@@ -166,13 +166,13 @@ export function ProductFilters({
 
                         {/* Search */}
                         <div>
-                          <label htmlFor="search" className="block text-sm font-medium text-gray-700">
+                          <label htmlFor="search" className="block text-sm font-medium text-slate-700">
                             Search
                           </label>
                           <input
                             type="text"
                             id="search"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Search products..."
                             value={filters.search || ''}
                             onChange={(e) => handleChange('search', e.target.value || undefined)}
@@ -180,10 +180,10 @@ export function ProductFilters({
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-shrink-0 justify-end px-4 py-4">
+                    <div className="flex flex-shrink-0 justify-end px-4 py-4 border-t border-slate-200">
                       <button
                         type="button"
-                        className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="rounded-md border border-slate-300 bg-white py-2 px-4 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         onClick={onClose}
                       >
                         Apply Filters

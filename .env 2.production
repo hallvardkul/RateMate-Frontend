@@ -1,0 +1,2 @@
+# Production API configuration
+VITE_API_URL=https://ratemate-backenddev-g9gbe4d0gwbrfvbu.northeurope-01.azurewebsites.net/api 

@@ -6,9 +6,8 @@ import ProductGrid from '../components/products/ProductGrid';
 import { Pagination } from '../components/common/Pagination';
 import { SearchBar } from '../components/common/SearchBar';
 import { useProducts } from '../hooks/useProducts';
-import { ProductFilters as ProductFiltersType } from '../types';
+import { ProductFilters as ProductFiltersType, Category, Brand } from '../types';
 import { categories as categoriesApi, brands as brandsApi } from '../services/api';
-import { Category, Brand } from '../types';
 
 export default function ProductsPage() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -26,7 +25,6 @@ export default function ProductsPage() {
     error,
     fetchProducts,
     setPage,
-    setFilters: setProductFilters,
   } = useProducts();
 
   // Fetch categories and brands once on mount
@@ -65,6 +63,11 @@ export default function ProductsPage() {
     [filters, debouncedSearch]
   );
 
+  // Trigger product fetch when filters/search/page change
+  useEffect(() => {
+    fetchProducts(page, combinedFilters as any);
+  }, [page, combinedFilters, fetchProducts]);
+
   const handleFilterChange = (newFilters: ProductFiltersType) => {
     setFilters(newFilters);
     setIsFiltersOpen(false);
@@ -80,7 +83,7 @@ export default function ProductsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="min-h-screen py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-md bg-red-50 p-4">
             <div className="flex">
@@ -98,10 +101,13 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900">Products</h1>
+            <p className="mt-1 text-sm text-slate-600">Discover and review products from top brands.</p>
+          </div>
           <div className="flex items-center gap-4">
             <SearchBar
               onSearch={handleSearch}
@@ -111,9 +117,9 @@ export default function ProductsPage() {
             <button
               type="button"
               onClick={() => setIsFiltersOpen(true)}
-              className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              <FunnelIcon className="mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+              <FunnelIcon className="mr-2 h-5 w-5 text-slate-400" aria-hidden="true" />
               Filters
             </button>
           </div>
@@ -125,7 +131,7 @@ export default function ProductsPage() {
           </div>
         ) : (
           <>
-            <div className="mt-8">
+            <div className="mt-6">
               <ProductGrid products={products} />
             </div>
 

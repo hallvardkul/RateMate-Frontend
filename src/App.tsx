@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -11,16 +10,17 @@ import ProfilePage from './pages/ProfilePage';
 import BrandLoginPage from './pages/BrandLoginPage';
 import BrandRegisterPage from './pages/BrandRegisterPage';
 import BrandDashboardPage from './pages/BrandDashboardPage';
+import BrandsPage from './pages/BrandsPage';
+import BrandPage from './pages/BrandPage';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ApiTest from './components/ApiTest';
-import './App.css';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-grow container mx-auto px-4 py-8">
             <Routes>
@@ -54,6 +54,13 @@ function App() {
 
               {/* Additional routes */}
               <Route path="/api-test" element={<ApiTest />} />
+
+              {/* Quick test route (relative path to test matching) */}
+              <Route path="brands-test" element={<div>Brands Test Route Works</div>} />
+
+              {/* Brands */}
+              <Route path="/brands" element={<BrandsPage />} />
+              <Route path="/brands/:brandId" element={<BrandPage />} />
             </Routes>
           </main>
           <Footer />

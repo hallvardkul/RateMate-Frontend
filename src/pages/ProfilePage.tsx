@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { user as userApi } from '../services/api';
-import { User } from '../types';
 
 export default function ProfilePage() {
-  const { user, updateUser } = useAuth();
+  const { user, loadUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -34,7 +33,7 @@ export default function ProfilePage() {
     try {
       const response = await userApi.update(user.user_id, formData);
       if (response.data) {
-        updateUser(response.data);
+        await loadUser();
         setSuccess(true);
         setIsEditing(false);
       }
@@ -136,7 +135,7 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
                   >
                     Edit Profile
                   </button>

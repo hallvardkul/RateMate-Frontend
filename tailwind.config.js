@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
+
 export default {
   content: [
     "./index.html",
@@ -6,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", "sans-serif"],
+      },
       colors: {
         gray: {
           50: '#F9FAFB',
@@ -22,5 +28,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [forms, typography],
 } 

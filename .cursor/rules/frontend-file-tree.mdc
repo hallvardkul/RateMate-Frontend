@@ -1,0 +1,121 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Frontend file tree structure and organization
+globs:
+  - "Ratemate-Frontend/**"
+alwaysApply: true
+---
+
+## Ratemate-Frontend File Tree Structure
+
+```
+Ratemate-Frontend/
+├── 📁 .cursor/rules/          # Cursor AI rules and configuration
+├── 📁 .github/                # GitHub workflows and templates
+├── 📁 src/                    # 🎯 MAIN SOURCE CODE
+│   ├── 📁 components/         # 🔧 React Components
+│   │   ├── 📁 auth/
+│   │   │   ├── LoginForm.tsx         # User login component
+│   │   │   ├── RegisterForm.tsx      # User registration component
+│   │   │   └── ProtectedRoute.tsx    # Route protection wrapper
+│   │   ├── 📁 common/
+│   │   │   ├── Pagination.tsx        # Pagination component
+│   │   │   └── SearchBar.tsx         # Search functionality
+│   │   ├── 📁 layout/
+│   │   │   ├── Layout.tsx            # Main layout wrapper
+│   │   │   ├── Navbar.tsx            # Navigation bar
+│   │   │   └── Footer.tsx            # Footer component
+│   │   ├── 📁 products/
+│   │   │   ├── ProductCard.tsx       # Product display card
+│   │   │   ├── ProductDetail.tsx     # Product detail view
+│   │   │   ├── ProductGrid.tsx       # Product grid layout
+│   │   │   ├── ProductFilters.tsx    # Product filtering
+│   │   │   └── MediaGallery.tsx      # Product media display
+│   │   ├── 📁 reviews/
+│   │   │   ├── ReviewForm.tsx        # Review submission form
+│   │   │   └── ReviewList.tsx        # Reviews display
+│   │   └── 📁 shared/
+│   │       └── RatingBar.tsx         # Star rating component
+│   ├── 📁 pages/              # 📄 Page Components (Routes)
+│   │   ├── LoginPage.tsx             # User login page
+│   │   ├── RegisterPage.tsx          # User registration page
+│   │   ├── ProfilePage.tsx           # User profile page
+│   │   ├── ProductsPage.tsx          # Products listing page
+│   │   ├── ProductDetailPage.tsx     # Individual product page
+│   │   ├── ProductDashboardPage.tsx  # Product management
+│   │   ├── BrandLoginPage.tsx        # Brand login page
+│   │   ├── BrandRegisterPage.tsx     # Brand registration page
+│   │   ├── BrandDashboardPage.tsx    # Brand management
+│   │   └── BrandsPage.tsx            # Brands listing page
+│   ├── 📁 hooks/              # 🪝 Custom React Hooks
+│   │   ├── useApi.ts                 # API interaction hook
+│   │   ├── useAuth.ts                # Authentication hook
+│   │   ├── useDebounce.ts            # Debounce utility hook
+│   │   ├── useProducts.ts            # Products data hook
+│   │   ├── useProductMedia.ts        # Product media hook
+│   │   └── useReviews.ts             # Reviews data hook
+│   ├── 📁 services/           # 🌐 API Services
+│   │   ├── api.ts                    # Main API client
+│   │   └── media.ts                  # Media upload service
+│   ├── 📁 contexts/           # 🔄 React Context Providers
+│   │   └── AuthContext.tsx           # Authentication context
+│   ├── 📁 types/              # 📝 TypeScript Type Definitions
+│   │   ├── index.ts                  # Exported types
+│   │   ├── Product.ts                # Product types
+│   │   ├── user.ts                   # User types
+│   │   └── brand.ts                  # Brand types
+│   ├── 📁 assets/             # 🖼️ Static Assets
+│   │   └── react.svg                 # React logo
+│   ├── App.tsx                # Main App component
+│   ├── App.css                # App-specific styles
+│   ├── main.tsx               # React app entry point
+│   ├── index.css              # Global styles (Tailwind)
+│   └── vite-env.d.ts          # Vite environment types
+├── 📁 public/                 # 🌐 Static Public Assets
+│   └── vite.svg               # Vite logo
+├── 📁 **node_modules/**       # 🔒 NPM dependencies (git ignored)
+├── 📁 **dist/**               # 🔒 Vite build output (git ignored)
+├── index.html                 # HTML entry point
+├── package.json               # Dependencies and scripts
+├── package-lock.json          # Locked dependency versions
+├── vite.config.ts             # Vite configuration
+├── tailwind.config.js         # Tailwind CSS configuration
+├── postcss.config.js          # PostCSS configuration
+├── tsconfig.json              # TypeScript configuration
+├── tsconfig.app.json          # App-specific TS config
+├── tsconfig.node.json         # Node-specific TS config
+├── eslint.config.js           # ESLint configuration
+├── .eslintignore              # ESLint ignore patterns
+├── **.env**                   # 🔒 Environment variables (git ignored)
+├── **.env.production**        # 🔒 Production env vars (git ignored)
+├── .gitignore                 # Git ignore rules
+└── README.md                  # Project documentation
+
+# 🔒 Git Ignored Files/Folders (shown in bold):
+# - node_modules/       → NPM packages
+# - dist/               → Vite build output
+# - .env*               → Environment variables
+# - *.log               → Log files
+# - coverage/           → Test coverage reports
+# - .cache/             → Various cache directories
+# - .DS_Store           → macOS system files
+```
+
+## Key Directories:
+- **`src/components/`** → Reusable React components organized by feature
+- **`src/pages/`** → Page-level components (route destinations)
+- **`src/hooks/`** → Custom React hooks for state and logic
+- **`src/services/`** → API clients and external service integrations
+- **`src/contexts/`** → React Context providers for global state
+- **`src/types/`** → TypeScript type definitions and interfaces
+
+## Technology Stack:
+- **React 18** with TypeScript for component development
+- **Vite** for fast development and building
+- **Tailwind CSS** for utility-first styling
+- **TanStack Query** for server state management
+- **React Router** for client-side routing

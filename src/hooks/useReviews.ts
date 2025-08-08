@@ -27,14 +27,14 @@ export function useReviews() {
     const response = await getReviews(() => reviewsApi.getAll(productId, page, state.limit));
     if (response.data) {
       const { items, total, page: currentPage, totalPages } = response.data;
-      const validReviews = items.filter((review): review is Review => review !== undefined);
-      setState({
+      const validReviews: Review[] = (items || []).filter((r): r is Review => Boolean(r));
+      setState((prev) => ({
+        ...prev,
         reviews: validReviews,
         total,
         page: currentPage,
         totalPages,
-        limit: state.limit,
-      });
+      }));
     }
     return response;
   }, [getReviews, state.limit]);
@@ -44,7 +44,7 @@ export function useReviews() {
     if (response.data) {
       setState((prev) => ({
         ...prev,
-        reviews: [response.data, ...prev.reviews],
+        reviews: [response.data as Review, ...prev.reviews],
         total: prev.total + 1,
       }));
     }
@@ -89,14 +89,14 @@ export function useComments() {
     const response = await getComments(() => commentsApi.getAll(reviewId, page, state.limit));
     if (response.data) {
       const { items, total, page: currentPage, totalPages } = response.data;
-      const validComments = items.filter((comment): comment is Comment => comment !== undefined);
-      setState({
+      const validComments: Comment[] = (items || []).filter((c): c is Comment => Boolean(c));
+      setState((prev) => ({
+        ...prev,
         comments: validComments,
         total,
         page: currentPage,
         totalPages,
-        limit: state.limit,
-      });
+      }));
     }
     return response;
   }, [getComments, state.limit]);
@@ -106,7 +106,7 @@ export function useComments() {
     if (response.data) {
       setState((prev) => ({
         ...prev,
-        comments: [response.data, ...prev.comments],
+        comments: [response.data as Comment, ...prev.comments],
         total: prev.total + 1,
       }));
     }

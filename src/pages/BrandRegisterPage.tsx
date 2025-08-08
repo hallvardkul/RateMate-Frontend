@@ -41,7 +41,7 @@ const BrandRegisterPage: React.FC = () => {
 
     try {
       const { confirmPassword, ...registrationData } = formData;
-      const response = await brandAuth.register(registrationData);
+      await brandAuth.register(registrationData);
       
       // Registration successful, redirect to login
       navigate('/brand/login', { 
